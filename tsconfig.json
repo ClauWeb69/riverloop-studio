@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": false,
+    "declaration": true,
+    "sourceMap": false,
+    "newLine": "lf"
+  },
+  "include": ["bin/**/*.ts", "src/server/**/*.ts", "src/server/**/*.cts", "src/shared/**/*.ts", "src/plugin/**/*.ts", "src/plugin/**/*.cts"]
+}

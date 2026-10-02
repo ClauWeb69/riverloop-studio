@@ -1,0 +1,368 @@
+// Testi del server in italiano (lingua di riferimento: le altre devono avere le stesse chiavi).
+// Parametri tra graffe ({nome}); la variante "<chiave>_one" vale quando il parametro count è 1.
+export const it = {
+  'lang.changed': 'Lingua di Studio: {name}.',
+  'lang.invalid': 'Lingua non supportata: "{value}". Usa en o it.',
+  'lang.missing': '--lang richiede una lingua: en o it.',
+
+  // -------------------------------------------------------------------------
+  // Riga di comando: aiuto e opzioni
+  // -------------------------------------------------------------------------
+  'cli.description': "Annota l'app in sviluppo e invia le modifiche a Claude Code, nella stessa sessione.",
+  'cli.opt.version': 'Mostra la versione',
+  'cli.opt.help': 'Mostra questo aiuto',
+  'cli.opt.mode': 'Tipo di app da annotare: web (dev server), electron (Electron e app Chromium, via porta di debug), window (finestra nativa)',
+  'cli.opt.port': "Porta del dev server dell'app (modalità web)",
+  'cli.opt.studioPort': 'Porta della pagina Studio',
+  'cli.opt.devCmd': 'Comando per avviare il dev server (modalità web)',
+  'cli.opt.appCmd': "Comando per avviare l'app desktop (modalità window ed electron)",
+  'cli.opt.windowTitle': 'Modalità window: testo contenuto nel titolo della finestra da mostrare',
+  'cli.opt.cdpPort': "Modalità electron: porta di debug dell'app",
+  'cli.opt.appWindow': "Modalità electron: finestra dell'app ridotta a icona (background, l'app si usa dalla pagina Studio) o normale (normal)",
+  'cli.opt.restartOnIdle': "Riavvia l'app desktop quando Claude Code finisce una risposta con modifiche",
+  'cli.opt.noDev': "Non avvia il dev server o l'app, si aggancia a quello già attivo",
+  'cli.opt.resume': 'Avvia claude --resume invece di una nuova sessione',
+  'cli.opt.claudeArgs': 'Argomenti extra passati a claude',
+  'cli.opt.claudeBin': 'Eseguibile di Claude Code, se non è nel PATH',
+  'cli.opt.autoSend': 'Parte con "Invio automatico" attivo',
+  'cli.opt.permissions': 'Permessi di Claude Code: ask (modalità e impostazioni di Claude Code) o skip (--dangerously-skip-permissions)',
+  'cli.opt.skipPermissions': 'Avvia Claude Code senza richieste di permesso (come --permissions skip)',
+  'cli.opt.noOpen': 'Non apre il browser automaticamente',
+  'cli.opt.debug': 'Mostra i dettagli tecnici (porte, invio automatico) per segnalare un problema',
+  'cli.opt.lang': 'Lingua di Studio e delle richieste a Claude Code: en o it (solo per questo avvio; anche con la variabile RIVERLOOP_STUDIO_LANG)',
+  'cli.port.invalid': 'deve essere una porta tra 1 e 65535',
+
+  // -------------------------------------------------------------------------
+  // Riga di comando: avvio e chiusura
+  // -------------------------------------------------------------------------
+  'cli.banner.mode': ' — modalità {mode}',
+  'cli.node.old': 'Serve Node.js 20 o successivo (trovato {version}).',
+  'cli.claude.notFound':
+    'Non trovo Claude Code ("{bin}"). Installalo (https://docs.claude.com/en/docs/claude-code) oppure indica il percorso con --claude-bin.',
+  'cli.claude.noVersion': '"{path} --version" non risponde: {output}',
+  'cli.claude.noOutput': 'nessun output',
+  'cli.pty': 'Terminale: {name}',
+  'cli.noPackageJson': 'Nessun package.json in questa cartella: sei nella radice del progetto?',
+  'cli.webIgnored': '{options}: valgono solo con --mode window o --mode electron.',
+  'cli.webIgnored_one': '{options}: vale solo con --mode window o --mode electron.',
+  'cli.gitignore.failed': 'Impossibile aggiornare il .gitignore: {message}',
+  'cli.cleanup': 'Rimossi {count} file di annotazioni più vecchi di 7 giorni.',
+  'cli.cleanup_one': 'Rimossi {count} file di annotazioni più vecchi di 7 giorni.',
+  'cli.dev.portBusy': "La porta {port} è già occupata (un'altra app o un'altra sessione di Studio): avvio il dev server di questo progetto sulla {next}.",
+  'cli.dev.portBusyHint': '  Se il server sulla {port} è proprio di questo progetto, rilancia con --no-dev per agganciarti.',
+  'cli.dev.starting': 'Avvio del dev server: {command}',
+  'cli.portNote': '(porta {port})',
+  'cli.debugPortNote': '(porta di debug {port})',
+  'cli.electron.noCommand':
+    'Indica come avviare l\'app con --app-cmd "<comando>" (es. "npm start"), oppure usa --no-dev se è già aperta con la porta di debug.',
+  'cli.app.starting': "Avvio dell'app: {command}",
+  'cli.electron.background': "  La finestra dell'app resta ridotta a icona: l'app si usa dalla pagina Studio (--app-window normal per lasciarla sul desktop).",
+  'cli.electron.attach': "Aggancio all'app già aperta sulla porta di debug {port}.",
+  'cli.window.noCommand':
+    'Indica come avviare l\'app con --app-cmd "<comando>", oppure usa --no-dev per scegliere una finestra già aperta (anche con --window-title).',
+  'cli.window.searching': 'Cerco una finestra con "{title}" nel titolo.',
+  'cli.window.choose': "Scegli la finestra dell'app dall'elenco nella pagina Studio.",
+  'cli.studioPortBusy': 'La porta {port} è occupata: Studio usa la {next}.',
+  'cli.skipPermissions': 'Claude Code parte {bold} (--dangerously-skip-permissions): modifiche e comandi non chiederanno conferma.',
+  'cli.skipPermissions.bold': 'senza richieste di permesso',
+  'cli.hooks.unavailable': 'Hook di Claude Code non disponibili: {message}',
+  'cli.restartOnIdle.unmanaged': '--restart-on-idle vale solo per le app avviate da Studio (con --app-cmd).',
+  'cli.restartOnIdle.on': "L'app verrà riavviata quando Claude Code finisce una risposta con modifiche.",
+  'cli.restartOnIdle.enabled': "Riavvio automatico dell'app a fine risposta: attivo.",
+  'cli.restartOnIdle.disabled': "Riavvio automatico dell'app a fine risposta: spento.",
+  'cli.permissions.skip': 'Permessi: {who} ora parte senza conferme.',
+  'cli.permissions.ask': 'Permessi: {who} ora usa i permessi standard (le sue modalità e impostazioni).',
+  'cli.what.app': "l'app",
+  'cli.what.devServer': 'dev server',
+  'cli.forceQuit': 'Chiusura forzata.',
+  'cli.closing': 'Chiusura: Claude Code, {what}, companion…',
+  'cli.closed': 'Chiuso.',
+  'cli.closeError': 'Errore durante la chiusura: {message}',
+  'cli.unexpected': 'Errore imprevisto: {message}',
+  'cli.claude.exited': '{who} è terminato: puoi riavviarlo dalla console di Studio.',
+  'cli.claude.exitedCode': '{who} è terminato (codice {code}): puoi riavviarlo dalla console di Studio.',
+  'cli.dev.port': 'Il dev server usa la porta {port}.',
+  'cli.dev.exited': 'Il dev server è terminato: le ultime righe sono nella pagina Studio.',
+  'cli.dev.exitedCode': 'Il dev server è terminato (codice {code}): le ultime righe sono nella pagina Studio.',
+  'cli.dev.fixedPort':
+    '  Lo script di sviluppo usa una porta fissa già occupata. Togli la porta dallo script (es. "-p 3000") così Studio può assegnarne una libera, oppure indica il comando con --dev-cmd.',
+  'cli.app.exited': "L'app è terminata: puoi riavviarla dalla pagina Studio.",
+  'cli.app.exitedCode': "L'app è terminata (codice {code}): puoi riavviarla dalla pagina Studio.",
+  'cli.companion.failed': 'Impossibile avviare il companion: {message}',
+  'cli.registry.failed': 'Registro dei progetti non disponibile: {message}',
+  'cli.dev.ready': 'App raggiungibile su localhost:{port}',
+  'cli.dev.stoppedStarting': "Il dev server si è fermato durante l'avvio: controlla il log qui sopra (anche nella pagina Studio).",
+  'cli.dev.timeout': 'Il dev server non risponde dopo 60 s sulla porta {port}: la pagina si aggiornerà quando sarà pronto.',
+  'cli.dev.none': 'Nessun server risponde su localhost:{port}: avvialo, la pagina si aggiornerà da sola.',
+  'cli.proxyNote': '(proxy su 127.0.0.1:{port})',
+  'cli.electron.connected': 'App collegata sulla porta di debug {port}',
+  'cli.electron.connectedTitle': 'App collegata sulla porta di debug {port} ({title})',
+  'cli.window.found': "Finestra dell'app trovata",
+  'cli.window.foundTitle': "Finestra dell'app trovata: {title}",
+  'cli.app.stoppedStarting': "L'app si è fermata durante l'avvio: controlla il log qui sopra (anche nella pagina Studio).",
+  'cli.electron.timeout': "L'app non ha aperto la porta di debug {port} entro 60 s: la pagina si aggiornerà quando sarà pronta.",
+  // {port} qui è testo: è il segnaposto che Studio sostituisce nel comando di --app-cmd
+  'cli.electron.timeoutHint': '  Se l\'app non è Electron in sviluppo, aggiungi "--remote-debugging-port={port}" al comando in --app-cmd.',
+  'cli.window.timeout': "Nessuna finestra dell'app dopo 60 s: la pagina si aggiornerà quando comparirà.",
+  'cli.appLine.electron': 'app desktop sulla porta di debug {port}',
+  'cli.appLine.window': 'finestra nativa',
+  'cli.appLine.windowTitle': 'finestra nativa "{title}"',
+  'cli.tokenWarning': 'Il link contiene il token di sessione: non condividerlo. Ctrl+C chiude tutto.',
+  'cli.openFailed': 'Non riesco ad aprire il browser ({message}): apri il link qui sopra.',
+
+  // -------------------------------------------------------------------------
+  // .gitignore del progetto
+  // -------------------------------------------------------------------------
+  'gitignore.comment': '# Riverloop Studio: annotazioni e screenshot locali',
+  'gitignore.addHint': 'Aggiungi {entry} al .gitignore: lì Studio salva annotazioni e screenshot.',
+  'gitignore.ask': 'Aggiungo {entry} al .gitignore del progetto?',
+  'gitignore.askChoices': '[S/n]',
+  'gitignore.added': '{entry} aggiunto al .gitignore',
+  'gitignore.declined': 'Va bene, non lo chiederò più per questo progetto.',
+
+  // -------------------------------------------------------------------------
+  // Companion: errori delle API e della pagina
+  // -------------------------------------------------------------------------
+  'http.tooLarge': 'Richiesta troppo grande',
+  'http.methodNotAllowed': 'Metodo non consentito',
+  'http.originDenied': 'Origin non consentita',
+  'http.jsonRequired': 'Serve application/json',
+  'http.invalidJson': 'JSON non valido',
+  'http.hostDenied': 'Host non consentito',
+  'http.notFound': 'Non trovato',
+  'http.internalError': 'Errore interno: {message}',
+  'http.unauthorized': 'Sessione Studio non autorizzata: apri il link mostrato nel terminale.',
+  'http.pageNotBuilt': 'Pagina Studio non compilata: esegui "npm run build" nella cartella di riverloop-studio.',
+  'companion.noApp': 'Nessuna app da mostrare',
+  'companion.idleRestart': "Claude Code ha finito con delle modifiche: riavvio dell'app.",
+  'api.sessionClosed': 'Questa sessione di Claude è stata chiusa: scegli una scheda della console e invia di nuovo.',
+  'api.notRunning': '{who} non è in esecuzione: riavvialo dalla console e riprova.',
+  'api.awaitingSend': '{who} sta aspettando una tua risposta nella console (richiesta di permesso o menu): rispondi lì e poi invia di nuovo.',
+  'api.awaitingRetry': '{who} sta aspettando una tua risposta nella console (richiesta di permesso o menu): rispondi lì e poi riprova.',
+  'api.annotationsLabel': 'annotazioni',
+  'api.claudeBusy': 'Claude Code sta lavorando: aspetta che finisca (o interrompilo con Esc nella console) e riprova.',
+  'api.suggestionInvalid': 'Questo suggerimento non è più valido.',
+  'api.lastSession': "L'ultima sessione non si può chiudere.",
+  'api.sessionNotFound': 'Sessione non trovata.',
+  'api.localeInvalid': 'Lingua non supportata: usa en, it oppure null (lingua del sistema).',
+
+  // -------------------------------------------------------------------------
+  // Annotazioni: validazione
+  // -------------------------------------------------------------------------
+  'annotation.invalidKind': 'Tipo di annotazione non valido',
+  'annotation.invalidId': 'Numero di annotazione non valido',
+  'annotation.none': 'Nessuna annotazione da inviare',
+  'annotation.tooMany': 'Troppe annotazioni (massimo {max})',
+  'annotation.invalidImage': 'immagine non valida',
+
+  // -------------------------------------------------------------------------
+  // Richiesta per Claude Code (composePrompt)
+  // -------------------------------------------------------------------------
+  'prompt.pos.center': 'al centro',
+  'prompt.pos.top': 'in alto al centro',
+  'prompt.pos.bottom': 'in basso al centro',
+  'prompt.pos.left': 'a sinistra, a metà altezza',
+  'prompt.pos.right': 'a destra, a metà altezza',
+  'prompt.pos.topLeft': 'in alto a sinistra',
+  'prompt.pos.topRight': 'in alto a destra',
+  'prompt.pos.bottomLeft': 'in basso a sinistra',
+  'prompt.pos.bottomRight': 'in basso a destra',
+  'prompt.noComment': '(nessun commento)',
+  'prompt.place.window': "finestra{title} dell'app desktop ({size} px)",
+  'prompt.place.electron': "finestra{title} dell'app desktop, pagina {url} (viewport {size})",
+  'prompt.place.page': 'pagina {url} (viewport {size})',
+  'prompt.header.single': 'Modifiche richieste sulla {where}:',
+  'prompt.header.multiWindows': 'Modifiche richieste su più finestre.',
+  'prompt.header.multiPages': 'Modifiche richieste su più pagine.',
+  'prompt.header.group': 'Sulla {where}:',
+  'prompt.item.request': 'Richiesta: {text}',
+  'prompt.item.component': 'Componente React: {name}',
+  'prompt.item.componentInside': 'Componente React: {name} (dentro {parents})',
+  'prompt.item.source': 'Sorgente: {source}',
+  'prompt.item.screenshot': 'Screenshot: @{path}',
+  'prompt.item.noScreenshot': 'Screenshot: non disponibile',
+  'prompt.item.noScreenshotReason': 'Screenshot: non disponibile ({reason})',
+  'prompt.context': 'Finestra intera con le annotazioni {ids}: @{path}',
+  'prompt.context_one': "Finestra intera con l'annotazione {ids}: @{path}",
+  'prompt.details.native': "Dettagli completi (posizione, elementi dell'interfaccia): @{path}",
+  'prompt.details.web': 'Dettagli completi (HTML, stili, posizione): @{path}',
+  'prompt.footer.screenshots': 'Negli screenshot ogni annotazione è evidenziata con il suo numero.',
+  'prompt.footer.noScreenshots': 'Gli screenshot non sono disponibili: per i dettagli usa il file JSON.',
+  'prompt.native.class': 'classe {name}',
+  'prompt.target.element': 'Elemento {target}',
+  'prompt.target.elementWithText': 'Elemento {target} — testo {text}',
+  'prompt.target.elementFallback': 'elemento',
+  'prompt.target.area': 'Zona di {size} px',
+  'prompt.target.drawing': 'Disegno su una zona di {size} px',
+  'prompt.target.inWindow': '(nella finestra: {pos})',
+  'prompt.target.onScreen': '(sullo schermo: {pos})',
+  'prompt.loc.window': 'Posizione nella finestra: x {x}, y {y} px ({pos})',
+  'prompt.loc.fromTopLeft': "dall'angolo in alto a sinistra",
+  'prompt.loc.over': "Sopra l'elemento: {element}",
+  'prompt.loc.where': 'Si trova: {where}',
+  'prompt.loc.inside': 'dentro {name}',
+  'prompt.loc.insideWithText': 'dentro {name} con il testo {text}',
+  'prompt.loc.underHeading': 'sotto il titolo {heading}',
+  'prompt.loc.page': 'Posizione nella pagina: x {x}, y {y} px ({detail})',
+  'prompt.loc.scrolled': 'sullo schermo x {x}, y {y}, con la pagina scorsa di {scroll}',
+  'prompt.loc.scrollY': '{n} px in verticale',
+  'prompt.loc.scrollX': '{n} px in orizzontale',
+  'prompt.loc.scrollBoth': '{vertical} e {horizontal}',
+  'prompt.loc.contains': 'Contiene: {items}',
+  'prompt.loc.crosses': 'Passa sopra: {items}',
+  'prompt.loc.containsNone': 'Contiene: nessun elemento intero (la zona copre parti di elementi più grandi)',
+
+  // -------------------------------------------------------------------------
+  // Annulla e Ripeti
+  // -------------------------------------------------------------------------
+  'history.gitMissing': 'Per Annulla e Ripeti serve git installato su questo computer.',
+  'history.unavailable': 'Annulla e Ripeti non disponibili: {message}',
+  'history.defaultLabel': 'richiesta',
+  'history.nothingToUndo': 'Niente da annullare: nessuna richiesta è ancora partita da Studio.',
+  'history.alreadyFirst': "Niente da annullare: i file sono già com'erano prima della prima richiesta.",
+  'history.undone': 'Annullato: i file sono tornati a prima di «{label}».',
+  'history.undoFailed': 'Annulla non riuscito: {message}',
+  'history.nothingToRedo': 'Niente da ripetere.',
+  'history.redoChanged': "Niente da ripetere: dopo l'Annulla i file sono stati modificati di nuovo.",
+  'history.redone': 'Ripetuto: di nuovo le modifiche di «{label}».',
+  'history.redoFailed': 'Ripeti non riuscito: {message}',
+  'history.notice':
+    'Nota: dopo la tua ultima risposta i file del progetto sono stati riportati a uno stato diverso con Annulla/Ripeti di Riverloop Studio. Rileggi i file prima di modificarli.',
+
+  // -------------------------------------------------------------------------
+  // Suggerimenti per il progetto
+  // -------------------------------------------------------------------------
+  'suggest.onlyThis': 'Non cambiare altro. Alla fine dimmi in una riga cosa hai modificato.',
+  'suggest.source.title': 'File e riga esatti per ogni elemento',
+  'suggest.source.detail':
+    "Con una riga in {file} ogni annotazione dice a Claude il file e la riga dell'elemento, invece di farglielo cercare da selettore e testo.",
+  'suggest.source.detailInstall': ' Serve anche installare riverloop-studio come dipendenza di sviluppo del progetto (dalla cartella locale).',
+  'suggest.source.intro':
+    "Configura in questo progetto il plugin «file e riga» di Riverloop Studio. In sviluppo aggiunge a ogni elemento l'attributo data-studio-src con file e riga, così le annotazioni indicano il punto esatto del codice; le build di produzione non cambiano.",
+  'suggest.source.installed': '1. Il pacchetto riverloop-studio è già installato nel progetto: non serve installarlo.',
+  'suggest.source.install': '1. Installa il pacchetto come dipendenza di sviluppo dalla cartella locale: {command}',
+  'suggest.source.next': 'In {config} importa withStudio da "riverloop-studio/next" e avvolgi con withStudio(...) la configurazione esportata.',
+  'suggest.source.nextCreate': 'Crea next.config.mjs con: import { withStudio } from "riverloop-studio/next"; export default withStudio({});',
+  'suggest.source.electronVite':
+    'In {config} importa il plugin (import studio from "riverloop-studio/vite") e aggiungilo ai plugins della sezione renderer, prima del plugin di React: plugins: [studio(), react()].',
+  'suggest.source.vite':
+    'In {config} importa il plugin (import studio from "riverloop-studio/vite") e mettilo per primo in plugins, prima del plugin di React: plugins: [studio(), react()].',
+  'suggest.devPort.title': 'Lo script "dev" fissa la porta {port}',
+  'suggest.devPort.detail':
+    "Se la {port} è occupata (un'altra app, un'altra sessione di Studio) il dev server non parte: Studio non può spostarlo su una porta libera finché lo script la impone.",
+  'suggest.devPort.intro': 'Nel package.json di questo progetto lo script "dev" fissa la porta del dev server: {script}',
+  'suggest.devPort.fix':
+    "Togli dallo script l'opzione della porta (-p o --port con il suo numero) e lascia il resto com'è. Next.js prende la porta dalla variabile PORT, che Riverloop Studio imposta da sé quando quella predefinita è occupata.",
+  'suggest.gitignore.title': 'Annotazioni e screenshot fuori dal repository',
+  'suggest.gitignore.detail': 'Studio salva annotazioni e screenshot in .claude/studio/, che git oggi non ignora: finirebbero tra i file da committare.',
+  'suggest.gitignore.prompt':
+    'Aggiungi al .gitignore di questo progetto la riga .claude/studio/ con sopra il commento "{comment}". Lì Riverloop Studio salva annotazioni e screenshot, che non vanno nel repository. Se il .gitignore non esiste, crealo nella cartella del progetto.',
+
+  // -------------------------------------------------------------------------
+  // Dev server, app desktop e proxy
+  // -------------------------------------------------------------------------
+  'process.startFailed': 'Impossibile avviare "{command}": {message}',
+  'devserver.retryPort': 'Porta {port} occupata: riprovo sulla {next}.',
+  'proxy.waiting.title': 'In attesa del dev server su localhost:{port}',
+  'proxy.waiting.text': 'La pagina si ricarica da sola appena il server risponde.',
+  'proxy.exited.title': 'Il dev server si è fermato',
+  'proxy.exited.text': "Il comando {command} è terminato. Puoi riavviarlo dalla barra in alto o chiedere a Claude di sistemare l'errore.",
+  'proxy.exited.textCode': "Il comando {command} è terminato con codice {code}. Puoi riavviarlo dalla barra in alto o chiedere a Claude di sistemare l'errore.",
+  'proxy.external.text':
+    'Studio si è agganciato a un server già attivo, ma su {address} non risponde nessuno. Avvia il dev server o rilancia Studio con {option}.',
+  'proxy.denied.title': 'Accesso non autorizzato',
+  'proxy.denied.text': "Questa porta serve l'app dentro Riverloop Studio. Apri Studio dal link mostrato nel terminale in cui hai lanciato {command}.",
+  'proxy.unreachable': 'Dev server non raggiungibile su localhost:{port} ({reason})',
+  'proxy.overlayMissing': 'overlay non compilato: esegui "npm run build" in riverloop-studio',
+  'overlay.notBuilt': 'Overlay non compilato: esegui "npm run build" nella cartella di riverloop-studio.',
+
+  // -------------------------------------------------------------------------
+  // Modalità electron e window: stato dell'app nella pagina
+  // -------------------------------------------------------------------------
+  'app.stopped': "L'app si è fermata: riavviala dal pulsante in alto.",
+  'electron.note.webview': 'Vale anche per le app WebView2 (Tauri su Windows) e per ogni app Chromium con la porta di debug.',
+  'electron.note.chromium': 'Vale per Electron e per ogni app basata su Chromium con la porta di debug.',
+  'electron.noApp': 'Nessuna app risponde sulla porta di debug {port}: avviala con --remote-debugging-port={port}.',
+  'electron.waiting': "In attesa dell'app…",
+  'electron.noWindow': "L'app è avviata ma non ha ancora aperto una finestra.",
+  'electron.hidden': "La finestra dell'app è ridotta a icona o nascosta: non può essere mostrata qui finché non torna visibile.",
+  'electron.neverShown': "La finestra dell'app non è ancora stata mostrata (la sua pagina misura 0×0): mostrala per vederla qui.",
+  'electron.notResponding': "La pagina dell'app non risponde: controlla la sua finestra (una finestra di dialogo aperta la blocca).",
+  'window.waiting': "In attesa della finestra dell'app…",
+  'window.noTitleMatch': 'Nessuna finestra aperta con "{title}" nel titolo: avvia l\'app.',
+  'window.choose': "Scegli la finestra dell'app dall'elenco in alto.",
+  'window.shareFromBrowser': '{reason} Puoi condividere la finestra dal browser.',
+  'window.untitled': '(senza titolo)',
+  'window.minimized': "La finestra dell'app è ridotta a icona: non può essere catturata finché non torna visibile.",
+  'window.noWindow': 'Nessuna finestra da catturare.',
+  'window.stillMinimized': 'La finestra è ridotta a icona.',
+  'window.stillGone': 'La finestra non è più disponibile.',
+
+  // -------------------------------------------------------------------------
+  // Cattura delle finestre native
+  // -------------------------------------------------------------------------
+  'capture.win.noStart': "L'aiutante di cattura di Windows non si avvia (PowerShell non disponibile o bloccato).",
+  'capture.win.blocked': "L'aiutante di cattura di Windows non si avvia (PowerShell bloccato?).",
+  'capture.win.noPowershell': 'PowerShell non disponibile: {message}',
+  'capture.win.helperUnavailable': 'Aiutante di cattura non disponibile: {message}',
+  'capture.win.unknownError': 'errore sconosciuto',
+  'capture.win.helperExited': 'aiutante di cattura terminato',
+  'capture.win.notStarted': "l'aiutante di cattura non si è avviato",
+  'capture.win.notActive': 'aiutante di cattura non attivo',
+  'capture.win.timeout': 'la cattura non risponde',
+  'capture.closed': 'cattura chiusa',
+  'capture.mac.list': "Su macOS non riesco a leggere l'elenco delle finestre (osascript).",
+  'capture.mac.permission':
+    'Su macOS la cattura della finestra non riesce: dai al terminale il permesso "Registrazione schermo" (Impostazioni di Sistema → Privacy e sicurezza) e rilancia Studio.',
+  'capture.x11.list': "Non riesco a leggere l'elenco delle finestre (wmctrl): il gestore delle finestre non lo permette.",
+  'capture.x11.capture': 'La cattura della finestra non riesce (import di ImageMagick).',
+  'capture.x11.missing':
+    'Per catturare le finestre servono wmctrl e ImageMagick (mancano: {missing}). Installa con "sudo apt install wmctrl imagemagick" oppure condividi la finestra dal browser.',
+  'capture.disabled': 'La cattura dal sistema è disattivata (RIVERLOOP_STUDIO_NO_CAPTURE): condividi la finestra dal browser.',
+  'capture.wayland': 'Su Wayland la cattura diretta delle finestre non è permessa: condividi la finestra dal browser.',
+  'capture.noDisplay': 'Nessuno schermo grafico in questa sessione (DISPLAY non impostato): condividi la finestra dal browser.',
+  'cdp.error': 'errore CDP',
+  'cdp.closed': 'connessione chiusa',
+  'cdp.noResponse': '{method}: nessuna risposta',
+
+  // -------------------------------------------------------------------------
+  // Sessioni di Claude Code
+  // -------------------------------------------------------------------------
+  'pty.noSpawn': '{name}: modulo senza spawn()',
+  'pty.unavailable':
+    'node-pty non è disponibile ({errors}).\nEsegui di nuovo "npm install" nella cartella di riverloop-studio. Su Linux/WSL, se la compilazione fallisce, installa gli strumenti di build (sudo apt install build-essential python3).',
+  'pty.restart.banner': '── Riavvio di Claude Code ({label}) ──',
+  'pty.restart.skip': '{label}, senza conferme',
+  'pty.restart.same': 'stessa conversazione',
+  'pty.restart.new': 'nuova conversazione',
+  'pty.startFailed': 'Impossibile avviare Claude Code:',
+  'sessions.max': 'Puoi aprire al massimo {max} sessioni di Claude Code per progetto.',
+
+  // -------------------------------------------------------------------------
+  // Altri progetti, porte, cartelle
+  // -------------------------------------------------------------------------
+  'projects.missingDir': 'Indica la cartella del progetto.',
+  'projects.absolute': 'Serve il percorso completo della cartella (es. G:\\Lavoro\\progetto o /home/utente/progetto).',
+  'projects.notFound': 'La cartella "{path}" non esiste.',
+  'projects.startFailed': 'Studio non è partito per "{project}".',
+  'projects.startFailedLog': 'Studio non è partito per "{project}":\n{log}',
+  'projects.timeout': 'Studio non ha risposto entro {seconds} secondi per "{project}". Log: {log}',
+  'projects.notOpen': 'Questo progetto non è più aperto.',
+  'projects.refused': 'Chiusura rifiutata (HTTP {status}).',
+  'projects.noResponse': 'Il progetto non risponde.',
+  'projects.noResponseDetail': 'Il progetto non risponde: {message}',
+  'ports.none': 'Nessuna porta libera a partire dalla {port}',
+  'util.dirNotOwned': 'La cartella {dir} non appartiene a questo utente.',
+  'proxy.serviceWorker': "Riverloop Studio non permette ai Service Worker dell'app di registrarsi attraverso il proxy.",
+  'studioDir.missing': 'Cartella {dir} assente.',
+  'studioDir.notPlain': '{dir} non è una cartella normale del progetto (link simbolico o fuori dal progetto): Studio non la usa.',
+  'claude.error.invalid': 'Richiesta non valida.',
+  'claude.error.not-running': 'Claude Code non è in esecuzione in questa scheda.',
+  'claude.error.awaiting-answer': 'Claude Code sta aspettando una risposta nella console (permesso o menu): rispondi lì, poi riprova.',
+  'claude.error.input-not-empty': "Nel riquadro di input di Claude Code c'è del testo non inviato: invialo o cancellalo, poi riprova.",
+  'claude.error.unknown-mode': 'Studio non riconosce la modalità mostrata da Claude Code: cambiala dalla console con Shift+Tab.',
+  'claude.error.unavailable': 'Questa modalità non è disponibile in questa sessione di Claude Code.',
+  'claude.error.ultracode-unconfirmed':
+    'Claude Code non ha cambiato ultracode (forse non è disponibile per questo modello o piano): guarda il messaggio nella console.',
+  'prompt.loc.sources': 'Probabile codice del controllo (trovato cercandone AutomationId o testo nel progetto, da verificare): {list}',
+} as const;

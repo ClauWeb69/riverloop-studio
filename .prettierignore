@@ -1,0 +1,6 @@
+dist
+node_modules
+package-lock.json
+test/fixtures/electron-app/node_modules
+test/fixtures/claude-screens
+*.md

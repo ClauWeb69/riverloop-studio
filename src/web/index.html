@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Riverloop Studio</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script type="module" src="./main.ts"></script>
+  </head>
+  <body>
+    <div class="studio" id="studio">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">Riverloop Studio</span>
+          <span class="brand-sep" aria-hidden="true">/</span>
+          <button class="project-btn" id="btn-projects" type="button" title="Progetti aperti su questo computer" data-i18n-title="topbar.projects">
+            <span class="project" id="project-name" data-i18n="topbar.projectPlaceholder">progetto</span><span data-icon-inline="chevron"></span>
+          </button>
+        </div>
+        <button class="dev-chip" id="dev-chip" type="button" title="Stato dell'app" data-i18n-title="topbar.devChip">
+          <span class="dot" aria-hidden="true"></span><span class="label">App</span>
+        </button>
+        <div class="seg history" id="history" role="group" aria-label="Modifiche ai file del progetto" data-i18n-aria-label="topbar.history" hidden>
+          <button
+            type="button"
+            id="code-undo"
+            title="Annulla le ultime modifiche ai file"
+            data-i18n-title="topbar.undo.title"
+            data-icon-left="undo"
+            data-i18n="topbar.undo"
+            disabled
+          >
+            Annulla
+          </button>
+          <button
+            type="button"
+            id="code-redo"
+            title="Ripeti le modifiche annullate"
+            data-i18n-title="topbar.redo.title"
+            data-icon-left="redo"
+            data-i18n="topbar.redo"
+            disabled
+          >
+            Ripeti
+          </button>
+        </div>
+        <div class="topbar-actions">
+          <button class="suggest-btn" id="btn-suggest" type="button" title="Suggerimenti per questo progetto" data-i18n-title="topbar.suggest" hidden>
+            <span data-icon-inline="bulb"></span><span class="count" id="suggest-count">0</span>
+          </button>
+          <button class="icon-btn" id="btn-swap" type="button" title="Inverti i pannelli" data-i18n-title="topbar.swap" data-icon="swap"></button>
+          <div class="seg" role="group" aria-label="Pannelli visibili" data-i18n-aria-label="topbar.views">
+            <button type="button" id="view-app" title="Solo app" data-i18n-title="topbar.viewApp" data-icon="appOnly"></button>
+            <button type="button" id="view-split" title="App e console affiancate" data-i18n-title="topbar.viewSplit" data-icon="split"></button>
+            <button type="button" id="view-console" title="Solo console" data-i18n-title="topbar.viewConsole" data-icon="terminal"></button>
+          </div>
+        </div>
+      </header>
+
+      <main class="workspace" id="workspace">
+        <section class="pane pane-app" id="pane-app" aria-label="App in sviluppo" data-i18n-aria-label="app.pane" tabindex="-1">
+          <div class="banner" id="dev-banner" hidden>
+            <div class="banner-head">
+              <strong id="dev-banner-title" data-i18n="devBanner.stoppedWeb">Il dev server si è fermato</strong>
+              <span class="spacer"></span>
+              <button type="button" class="btn btn-small" id="dev-restart" data-icon-left="reload" data-i18n="devBanner.restartWeb">Riavvia dev server</button>
+              <button type="button" class="icon-btn" id="dev-banner-close" title="Chiudi" data-i18n-title="common.close" data-icon="close"></button>
+            </div>
+            <pre class="banner-log" id="dev-banner-log"></pre>
+          </div>
+
+          <div class="toolbar nav-bar">
+            <button class="icon-btn" id="nav-back" type="button" title="Indietro" data-i18n-title="nav.back" data-icon="back"></button>
+            <button class="icon-btn" id="nav-forward" type="button" title="Avanti" data-i18n-title="nav.forward" data-icon="forward"></button>
+            <button class="icon-btn" id="nav-reload" type="button" title="Ricarica" data-i18n-title="nav.reload" data-icon="reload"></button>
+            <form class="url-form" id="url-form" autocomplete="off">
+              <span class="url-host" id="url-host">localhost:3000</span>
+              <input
+                class="url-input"
+                id="url-input"
+                type="text"
+                spellcheck="false"
+                aria-label="Percorso della pagina"
+                data-i18n-aria-label="nav.path"
+                value="/"
+              />
+            </form>
+            <div class="desk-info" id="desk-info" hidden>
+              <span class="url-host" id="desk-kind" data-i18n="desk.kindApp">App desktop</span>
+              <select class="win-select" id="win-select" aria-label="Finestra dell'app" data-i18n-aria-label="desk.windowSelect" hidden></select>
+              <span class="desk-title" id="desk-title"></span>
+            </div>
+            <button
+              class="icon-btn"
+              id="app-front"
+              type="button"
+              title="Porta la finestra dell'app in primo piano"
+              data-i18n-title="desk.front"
+              data-icon="external"
+              hidden
+            ></button>
+            <button
+              class="btn btn-small"
+              id="app-restart"
+              type="button"
+              title="Chiude e riavvia l'app"
+              data-i18n-title="desk.restart.title"
+              data-icon-left="reload"
+              data-i18n="desk.restart"
+              hidden
+            >
+              Riavvia app
+            </button>
+            <div class="seg" id="viewport-seg" role="group" aria-label="Viewport" data-i18n-aria-label="viewport.group">
+              <button type="button" data-viewport="desktop" title="Desktop (larghezza piena)" data-i18n-title="viewport.desktop" data-icon="desktop"></button>
+              <button type="button" data-viewport="tablet" title="Tablet (768 px)" data-i18n-title="viewport.tablet" data-icon="tablet"></button>
+              <button type="button" data-viewport="mobile" title="Mobile (390 px)" data-i18n-title="viewport.mobile" data-icon="mobile"></button>
+            </div>
+          </div>
+
+          <div class="toolbar annotate-bar">
+            <div class="seg seg-tools" role="group" aria-label="Strumenti di annotazione" data-i18n-aria-label="tools.group">
+              <button
+                type="button"
+                data-mode="navigate"
+                title="Naviga (Esc)"
+                data-i18n-title="tools.navigate.title"
+                data-icon-left="pointer"
+                data-i18n="tools.navigate"
+              >
+                Naviga
+              </button>
+              <button
+                type="button"
+                data-mode="select"
+                title="Seleziona elemento (S)"
+                data-i18n-title="tools.select.title"
+                data-icon-left="target"
+                data-i18n="tools.select"
+              >
+                Elemento
+              </button>
+              <button type="button" data-mode="area" title="Riquadro (R)" data-i18n-title="tools.area.title" data-icon-left="area" data-i18n="tools.area">
+                Riquadro
+              </button>
+              <button type="button" data-mode="draw" title="Disegno (D)" data-i18n-title="tools.draw.title" data-icon-left="pen" data-i18n="tools.draw">
+                Disegno
+              </button>
+            </div>
+            <button
+              class="icon-btn"
+              id="btn-undo"
+              type="button"
+              title="Annulla ultima annotazione (Ctrl+Z)"
+              data-i18n-title="tools.undo.title"
+              data-icon="undo"
+            ></button>
+            <span class="spacer"></span>
+            <label
+              class="switch"
+              id="idle-switch"
+              title="Riavvia l'app quando Claude Code finisce una risposta in cui ha modificato file o lanciato comandi"
+              data-i18n-title="tools.restartIdle.title"
+              hidden
+            >
+              <input type="checkbox" id="restart-idle" />
+              <span class="switch-track" aria-hidden="true"></span>
+              <span data-i18n="tools.restartIdle">Riavvia a fine risposta</span>
+            </label>
+            <label class="switch" title="Invia il messaggio a Claude senza aspettare Invio" data-i18n-title="tools.autoSend.title">
+              <input type="checkbox" id="auto-send" />
+              <span class="switch-track" aria-hidden="true"></span>
+              <span data-i18n="tools.autoSend">Invio automatico</span>
+            </label>
+            <button class="btn btn-primary" id="btn-send" type="button" title="Invia le annotazioni (Ctrl+Enter)" data-i18n-title="tools.send.title" disabled>
+              <span data-icon-inline="send"></span><span data-i18n="tools.send">Invia</span><span class="count" id="send-count">0</span>
+            </button>
+          </div>
+
+          <div class="stage" id="stage" data-viewport="desktop">
+            <div class="device" id="device">
+              <iframe
+                id="app-frame"
+                title="App in sviluppo"
+                data-i18n-title="app.pane"
+                allow="clipboard-read; clipboard-write; fullscreen; geolocation; camera; microphone; display-capture"
+              ></iframe>
+              <div class="app-view" id="app-view" hidden>
+                <canvas class="app-canvas" id="app-canvas" tabindex="0" aria-label="App desktop" data-i18n-aria-label="app.canvas"></canvas>
+                <div class="app-marks" id="app-marks" data-mode="navigate"></div>
+                <div class="app-notice" id="app-notice" hidden>
+                  <div class="app-notice-card">
+                    <strong id="app-notice-title" data-i18n="notice.waiting">In attesa dell'app</strong>
+                    <p id="app-notice-text"></p>
+                    <div class="app-notice-actions">
+                      <button type="button" class="btn btn-primary" id="app-notice-show" data-i18n="notice.show" hidden>Mostra la finestra</button>
+                      <button type="button" class="btn btn-primary" id="app-notice-share" data-i18n="notice.share" hidden>
+                        Condividi la finestra dal browser
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="frozen-chip"
+              id="app-frozen"
+              title="Le annotazioni si riferiscono a questa immagine. Clic per tornare all'immagine dal vivo."
+              data-i18n-title="frozen.title"
+              data-i18n="frozen.label"
+              hidden
+            >
+              Immagine ferma · torna dal vivo
+            </button>
+            <div class="suggest" id="suggest" role="dialog" aria-label="Suggerimento per il progetto" data-i18n-aria-label="suggest.dialog" hidden>
+              <div class="suggest-head">
+                <span class="suggest-tag" data-i18n="suggest.tag">Suggerimento</span>
+                <span class="suggest-pos" id="suggest-pos"></span>
+                <span class="spacer"></span>
+                <button type="button" class="icon-btn" id="suggest-close" title="Non ora" data-i18n-title="suggest.later" data-icon="close"></button>
+              </div>
+              <strong id="suggest-title"></strong>
+              <p id="suggest-detail"></p>
+              <details class="suggest-prompt">
+                <summary data-i18n="suggest.prompt">Cosa verrà chiesto a Claude</summary>
+                <pre id="suggest-text"></pre>
+              </details>
+              <p class="suggest-note" data-i18n="suggest.note">
+                Studio non modifica i file del progetto: con un clic la richiesta va a Claude Code, che li cambia con i suoi permessi.
+              </p>
+              <div class="suggest-actions">
+                <button type="button" class="link-btn" id="suggest-never" data-i18n="suggest.never">Non chiedere più</button>
+                <span class="spacer"></span>
+                <button type="button" class="btn btn-small" id="suggest-later" data-i18n="suggest.later">Non ora</button>
+                <button type="button" class="btn btn-small btn-primary" id="suggest-apply" data-i18n="suggest.apply">Chiedi a Claude</button>
+              </div>
+            </div>
+            <div class="scale-badge" id="scale-badge" hidden></div>
+            <div class="cbox" id="cbox" role="dialog" aria-label="Commento all'annotazione" data-i18n-aria-label="cbox.dialog" hidden>
+              <div class="cbox-head">
+                <span class="cbox-kind" id="cbox-kind" data-i18n="kind.element">Elemento</span>
+                <span class="cbox-target" id="cbox-target"></span>
+              </div>
+              <div class="cbox-nav" id="cbox-nav">
+                <button
+                  type="button"
+                  class="btn btn-small"
+                  data-adjust="parent"
+                  title="Seleziona il contenitore (Alt+↑)"
+                  data-i18n-title="cbox.parent.title"
+                  data-i18n="cbox.parent"
+                >
+                  ↑ Genitore
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-small"
+                  data-adjust="child"
+                  title="Seleziona il primo figlio (Alt+↓)"
+                  data-i18n-title="cbox.child.title"
+                  data-i18n="cbox.child"
+                >
+                  ↓ Figlio
+                </button>
+              </div>
+              <textarea id="cbox-text" rows="3" placeholder="Cosa va cambiato?" data-i18n-placeholder="cbox.placeholder" spellcheck="true"></textarea>
+              <div class="cbox-foot">
+                <span class="cbox-hint" id="cbox-hint"></span>
+                <button type="button" class="btn btn-small btn-danger" id="cbox-delete" data-i18n="cbox.delete">Elimina</button>
+                <button type="button" class="btn btn-small" id="cbox-cancel" data-i18n="common.cancel">Annulla</button>
+                <button type="button" class="btn btn-small btn-primary" id="cbox-save" data-i18n="cbox.save">Salva</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tray" id="tray" hidden>
+            <div class="tray-head">
+              <span class="tray-title" data-i18n="tray.title">Annotazioni</span>
+              <span class="tray-hint" id="tray-hint"></span>
+              <span class="spacer"></span>
+              <button type="button" class="link-btn" id="tray-clear-sent" data-i18n="tray.clearSent" hidden>Nascondi inviate</button>
+            </div>
+            <ol class="tray-list" id="tray-list"></ol>
+            <details class="tray-prompt" id="tray-prompt" hidden>
+              <summary data-i18n="tray.lastPrompt">Ultimo messaggio incollato nella console</summary>
+              <pre id="tray-prompt-text"></pre>
+            </details>
+          </div>
+        </section>
+
+        <div
+          class="divider"
+          id="divider"
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Ridimensiona i pannelli"
+          data-i18n-aria-label="layout.divider"
+          tabindex="0"
+        ></div>
+
+        <section class="pane pane-console" id="pane-console" aria-label="Console Claude Code" data-i18n-aria-label="console.pane">
+          <div class="console-head">
+            <span class="conn-dot" id="conn-dot" title="Connessione" data-i18n-title="console.connection"></span>
+            <div class="session-tabs" id="session-tabs" role="tablist" aria-label="Sessioni di Claude Code" data-i18n-aria-label="console.tabs"></div>
+            <button
+              class="icon-btn"
+              id="btn-session-new"
+              type="button"
+              title="Nuova sessione di Claude Code"
+              data-i18n-title="console.newSession"
+              data-icon="plus"
+            ></button>
+            <span class="console-sub" id="console-sub"></span>
+            <span class="spacer"></span>
+            <button class="perm-chip" id="btn-perms" type="button" title="Permessi di Claude Code" data-i18n-title="perms.title" data-mode="ask">
+              <span class="perm-dot" aria-hidden="true"></span><span id="perm-label" data-i18n="perms.standard">Permessi standard</span>
+            </button>
+            <button class="icon-btn text-btn" id="font-down" type="button" title="Carattere più piccolo" data-i18n-title="console.fontDown">A−</button>
+            <button class="icon-btn text-btn" id="font-up" type="button" title="Carattere più grande" data-i18n-title="console.fontUp">A+</button>
+            <button
+              class="icon-btn"
+              id="btn-fullscreen"
+              type="button"
+              title="Schermo intero (cattura anche Ctrl+W, Ctrl+T, Ctrl+N)"
+              data-i18n-title="console.fullscreen"
+              data-icon="fullscreen"
+            ></button>
+            <button class="icon-btn" id="btn-settings" type="button" title="Impostazioni" data-i18n-title="settings.title" data-icon="settings"></button>
+          </div>
+          <div class="claude-bar" id="claude-bar">
+            <select
+              class="cb-select"
+              id="cb-model"
+              title="Modello di Claude Code (come /model, che lo salva anche come predefinito per le nuove sessioni)"
+              data-i18n-title="claudeBar.modelTitle"
+              aria-label="Modello"
+              data-i18n-aria-label="claudeBar.model"
+            ></select>
+            <select
+              class="cb-select"
+              id="cb-effort"
+              title="Quanto ragiona Claude prima di rispondere (come /effort, che lo salva anche come predefinito). In fondo: ultracode, solo per questa sessione"
+              data-i18n-title="claudeBar.effortTitle"
+              aria-label="Effort"
+              data-i18n-aria-label="claudeBar.effort"
+            ></select>
+            <select
+              class="cb-select cb-mode"
+              id="cb-mode"
+              title="Modalità dei permessi (come Shift+Tab nella console)"
+              data-i18n-title="claudeBar.modeTitle"
+              aria-label="Modalità"
+              data-i18n-aria-label="claudeBar.modeLabel"
+            ></select>
+            <button
+              class="btn btn-small cb-goal"
+              id="cb-goal"
+              type="button"
+              title="Un obiettivo su cui Claude continua a lavorare finché non è raggiunto (come /goal)"
+              data-i18n-title="claudeBar.goalTitle"
+              data-i18n="claudeBar.goal"
+            >
+              Goal…
+            </button>
+            <span class="spacer"></span>
+            <button class="cb-usage" id="cb-usage" type="button"></button>
+          </div>
+          <div class="terminal-wrap">
+            <div class="term-host" id="terminal"></div>
+            <div class="exit-overlay" id="exit-overlay" hidden>
+              <div class="exit-card">
+                <strong data-i18n="exit.title">Sessione terminata</strong>
+                <p id="exit-detail" data-i18n="exit.detail">Claude Code è uscito.</p>
+                <div class="exit-actions">
+                  <button type="button" class="btn btn-primary" data-restart="continue" data-i18n="exit.continue">Riprendi l'ultima conversazione</button>
+                  <button type="button" class="btn" data-restart="resume" data-i18n="exit.resume">Scegli una sessione…</button>
+                  <button type="button" class="btn" data-restart="new" data-i18n="exit.new">Nuova sessione</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div class="popover popover-goal" id="goal" role="dialog" aria-label="Goal" data-i18n-aria-label="claudeBar.goal" hidden>
+        <div class="popover-title" data-i18n="goal.title">Goal per Claude Code</div>
+        <textarea
+          id="goal-text"
+          rows="3"
+          maxlength="400"
+          placeholder="Es.: tutti i test passano e la pagina di login è tradotta"
+          data-i18n-placeholder="goal.placeholder"
+        ></textarea>
+        <p class="field-note" data-i18n="goal.note">
+          Claude continua a lavorare, una risposta dopo l'altra, finché l'obiettivo non è raggiunto. Ctrl+Invio per impostarlo.
+        </p>
+        <div class="popover-actions">
+          <button type="button" class="btn btn-small" id="goal-clear" data-i18n="goal.clear">Togli goal</button>
+          <span class="spacer"></span>
+          <button type="button" class="btn btn-small" id="goal-cancel" data-i18n="common.cancel">Annulla</button>
+          <button type="button" class="btn btn-small btn-primary" id="goal-set" data-i18n="goal.set">Imposta goal</button>
+        </div>
+      </div>
+
+      <div class="popover menu" id="session-menu" role="menu" aria-label="Sessioni di Claude Code" data-i18n-aria-label="console.tabs" hidden>
+        <button type="button" role="menuitem" data-session-action="new">
+          <strong data-i18n="sessionMenu.new">Nuova sessione</strong
+          ><small data-i18n="sessionMenu.newDetail">Un altro Claude Code nella cartella del progetto, con una conversazione nuova.</small>
+        </button>
+        <button type="button" role="menuitem" data-session-action="resume">
+          <strong data-i18n="sessionMenu.resume">Riprendi una conversazione…</strong
+          ><small data-i18n="sessionMenu.resumeDetail">Scegli dall'elenco delle conversazioni del progetto (claude --resume).</small>
+        </button>
+        <hr />
+        <button type="button" role="menuitem" data-session-action="window">
+          <strong data-i18n="sessionMenu.window">Apri questa sessione in una nuova finestra</strong
+          ><small data-i18n="sessionMenu.windowDetail">Per esempio su un secondo schermo: ogni finestra mostra la sua sessione.</small>
+        </button>
+      </div>
+
+      <div class="popover popover-projects" id="projects" role="dialog" aria-label="Progetti" data-i18n-aria-label="projects.dialog" hidden>
+        <div class="popover-title" data-i18n="topbar.projects">Progetti aperti su questo computer</div>
+        <ul class="projects-list" id="projects-list"></ul>
+        <div class="popover-title" data-i18n="projects.openOther">Apri un altro progetto</div>
+        <form class="project-form" id="project-form" autocomplete="off">
+          <input id="project-path" type="text" spellcheck="false" aria-label="Cartella del progetto" data-i18n-aria-label="projects.path" />
+          <button type="submit" class="btn btn-small btn-primary" id="project-open" data-i18n="projects.start">Avvia</button>
+        </form>
+        <p class="field-error" id="project-error" hidden></p>
+        <div id="projects-recent-wrap" hidden>
+          <div class="field-note" data-i18n="projects.recent">Recenti</div>
+          <div class="chips" id="projects-recent"></div>
+        </div>
+        <p class="field-note" data-i18n="projects.note">
+          Studio parte in background in quella cartella, con il suo dev server e il suo Claude Code, e si apre in una nuova scheda.
+        </p>
+      </div>
+
+      <div class="popover popover-perms" id="perms" role="dialog" aria-label="Permessi di Claude Code" data-i18n-aria-label="perms.title" hidden>
+        <div class="popover-title" data-i18n="perms.title">Permessi di Claude Code</div>
+        <label class="choice">
+          <input type="radio" name="perm" value="ask" />
+          <span
+            ><strong data-i18n="perms.standard">Permessi standard</strong
+            ><small data-i18n="perms.standardDetail"
+              >Claude Code chiede conferma secondo la sua modalità (auto, manuale, accetta modifiche…) e le tue impostazioni. Si cambia con Maiusc+Tab nella
+              console. Consigliato.</small
+            ></span
+          >
+        </label>
+        <label class="choice choice-danger">
+          <input type="radio" name="perm" value="skip" />
+          <span
+            ><strong data-i18n="perms.skip">Salta tutte le conferme</strong
+            ><small data-i18n="perms.skipDetail"
+              >Avvia claude con --dangerously-skip-permissions: modifiche e comandi partono senza chiedere. Solo per progetti di cui ti fidi.</small
+            ></span
+          >
+        </label>
+        <p class="field-note" id="perm-note" data-i18n="perms.note">
+          Applicando, Claude Code si riavvia e riprende la stessa conversazione. La scelta resta salvata per questo progetto.
+        </p>
+        <div class="popover-actions">
+          <button type="button" class="btn btn-small" id="perm-cancel" data-i18n="common.cancel">Annulla</button>
+          <button type="button" class="btn btn-small btn-primary" id="perm-apply" data-i18n="perms.apply">Applica</button>
+        </div>
+      </div>
+
+      <div class="popover" id="settings" hidden>
+        <div class="popover-title" data-i18n="settings.title">Impostazioni</div>
+        <label class="field">
+          <span data-i18n="settings.theme">Tema</span>
+          <select id="set-theme">
+            <option value="system" data-i18n="settings.theme.system">Come il sistema</option>
+            <option value="light" data-i18n="settings.theme.light">Chiaro</option>
+            <option value="dark" data-i18n="settings.theme.dark">Scuro</option>
+          </select>
+        </label>
+        <label class="field">
+          <span data-i18n="settings.language">Lingua</span>
+          <select id="set-locale">
+            <option value="auto" data-i18n="settings.language.auto">Automatica (sistema)</option>
+          </select>
+        </label>
+        <label class="field">
+          <span data-i18n="settings.font">Carattere della console</span>
+          <input id="set-font" type="text" spellcheck="false" />
+        </label>
+        <label class="field">
+          <span data-i18n="settings.size">Dimensione</span>
+          <input id="set-size" type="number" min="9" max="28" step="1" />
+        </label>
+        <p class="field-note" data-i18n="settings.shortcuts">
+          Le scorciatoie S, R, D, Esc, Ctrl+Enter e Ctrl+Z valgono solo quando il focus è sul pannello dell'app.
+        </p>
+      </div>
+
+      <div class="toasts" id="toasts" aria-live="polite"></div>
+      <div class="fatal" id="fatal" hidden></div>
+    </div>
+  </body>
+</html>

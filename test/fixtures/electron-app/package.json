@@ -1,0 +1,13 @@
+{
+  "name": "rls-electron-fixture",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App Electron minima per i test end-to-end di Riverloop Studio (modalità electron).",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^44.0.0"
+  }
+}

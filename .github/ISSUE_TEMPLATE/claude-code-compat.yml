@@ -1,0 +1,34 @@
+name: Claude Code compatibility
+description: Auto-send or another Claude Code integration stopped working after a Claude Code update
+labels: [claude-code-compat]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Studio reads Claude Code's terminal screen to know when it can paste and press Enter. A Claude Code update that changes the screen can break this. By design Studio never presses Enter when unsure, so the usual symptom is a message left in the input box.
+  - type: input
+    id: claude
+    attributes:
+      label: Claude Code version
+      placeholder: claude --version
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Riverloop Studio version
+      placeholder: riverloop-studio --version
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: debug
+    attributes:
+      label: Output with --debug
+      description: Run Studio with `--debug`, reproduce, and paste the "auto-send" lines. Remove the session link (it contains a token).
+      render: text

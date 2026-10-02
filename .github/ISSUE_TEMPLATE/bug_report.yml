@@ -1,0 +1,45 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Riverloop Studio version
+      placeholder: riverloop-studio --version
+    validations:
+      required: true
+  - type: input
+    id: claude
+    attributes:
+      label: Claude Code version
+      placeholder: claude --version
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options: [web, electron, window]
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS and Node.js version
+      placeholder: Windows 11 / macOS 15 / Ubuntu 24.04, Node 22.x
+    validations:
+      required: true
+  - type: textarea
+    id: debug
+    attributes:
+      label: Output with --debug
+      description: Run Studio with `--debug` and paste the relevant terminal output. Remove the session link (it contains a token).
+      render: text

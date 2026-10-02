@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <title>Studio Electron Fixture</title>
+    <style>
+      body {
+        font:
+          16px system-ui,
+          sans-serif;
+        margin: 0;
+        padding: 24px;
+        background: #f4f4f8;
+        color: #1c1c21;
+      }
+      h1 {
+        color: #b12584;
+        margin: 0 0 12px;
+      }
+      button {
+        padding: 8px 14px;
+        font: inherit;
+      }
+      input {
+        padding: 7px 10px;
+        font: inherit;
+      }
+      .card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 16px;
+        margin-top: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      #spacer {
+        height: 1200px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">App Electron di prova</h1>
+    <p class="lead">Contatore: <span id="count">0</span></p>
+    <button id="inc" class="cta">Incrementa</button>
+    <input id="name" placeholder="Scrivi qui" />
+    <button id="open-second" onclick="window.open('second.html', '_blank')">Seconda finestra</button>
+    <section class="card" id="scheda">
+      <h2>Scheda</h2>
+      <p id="card-text">Testo della scheda.</p>
+    </section>
+    <div id="spacer"></div>
+    <script>
+      let n = 0;
+      document.getElementById('inc').addEventListener('click', () => {
+        document.getElementById('count').textContent = String(++n);
+      });
+    </script>
+  </body>
+</html>
