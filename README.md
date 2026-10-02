@@ -8,6 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/ClauWeb69/riverloop-studio/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/ClauWeb69/riverloop-studio?style=social" /></a>
+  <a href="https://github.com/ClauWeb69/riverloop-studio/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ClauWeb69/riverloop-studio/actions/workflows/ci.yml/badge.svg" /></a>
   <img alt="License: Apache 2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue" />
   <img alt="Node.js 20+" src="https://img.shields.io/badge/node-%3E%3D20-339933" />
   <img alt="Web, Electron, native windows" src="https://img.shields.io/badge/apps-web%20%7C%20electron%20%7C%20native-b12584" />
