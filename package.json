@@ -1,6 +1,6 @@
 {
   "name": "riverloop-studio",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Annotate your app under development (web, Electron or native window) and send the changes to Claude Code, in the same terminal session. Independent project, not affiliated with Anthropic.",
   "author": "Riverloop SRLS",
   "license": "Apache-2.0",
