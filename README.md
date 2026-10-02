@@ -9,6 +9,7 @@
 <p align="center">
   <a href="https://github.com/ClauWeb69/riverloop-studio/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/ClauWeb69/riverloop-studio?style=social" /></a>
   <a href="https://github.com/ClauWeb69/riverloop-studio/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ClauWeb69/riverloop-studio/actions/workflows/ci.yml/badge.svg" /></a>
+  <a href="https://www.npmjs.com/package/riverloop-studio"><img alt="npm version" src="https://img.shields.io/npm/v/riverloop-studio" /></a>
   <img alt="License: Apache 2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue" />
   <img alt="Node.js 20+" src="https://img.shields.io/badge/node-%3E%3D20-339933" />
   <img alt="Web, Electron, native windows" src="https://img.shields.io/badge/apps-web%20%7C%20electron%20%7C%20native-b12584" />
@@ -93,8 +94,18 @@ claude doctor      # optional: detailed health check
 
 ### 3. Riverloop Studio
 
+Install it globally from [npm](https://www.npmjs.com/package/riverloop-studio):
+
 ```bash
-npm install -g riverloop-studio
+npm install -g riverloop-studio@latest
+```
+
+`@latest` is what npm installs when you give no version, so `npm install -g riverloop-studio` is the same. To pin a specific version use e.g. `riverloop-studio@0.2.0`. To update later, run the same command again (or `npm update -g riverloop-studio`).
+
+Want to try it without installing? Run it once with npx from your project folder:
+
+```bash
+npx riverloop-studio@latest
 ```
 
 Or from source:

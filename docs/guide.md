@@ -55,9 +55,9 @@ The desktop modes (`electron`, `window`) have been verified on Windows 11 only. 
 ## Installation
 
 ```bash
-npm install -g riverloop-studio
+npm install -g riverloop-studio@latest
 # or, without installing
-npx riverloop-studio
+npx riverloop-studio@latest
 ```
 
 From source:
