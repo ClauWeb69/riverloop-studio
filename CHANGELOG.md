@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/) (while in `0.x`, minor versions may contain breaking changes).
 
+## [Unreleased]
+
+### Added
+
+- **No more `--mode`**: Studio detects the kind of app from the project (Electron or Tauri dependency, `package.json` scripts, .NET desktop project, Python GUI, Flutter) and how to start it, including the package manager from the lock file. Command-line options still win.
+
 ## [0.2.0] — 2026-10-02 — first public release
 
 ### Added

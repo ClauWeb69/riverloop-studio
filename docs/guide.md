@@ -150,7 +150,7 @@ riverloop-studio --mode window --no-dev --window-title "Inventory" # window alre
 
 | Option | Default | Effect |
 |---|---|---|
-| `--mode <web\|window\|electron>` | `web` | Kind of app: web dev server, native window, Electron/Chromium app. See [Desktop apps](#desktop-apps). |
+| `--mode <web\|window\|electron>` | detected | Kind of app: web dev server, native window, Electron/Chromium app. Without it Studio detects it from the project (Electron or Tauri dependency, `package.json` scripts, .NET desktop project, Python GUI, Flutter) and picks the start command too; the terminal says what it found. See [Desktop apps](#desktop-apps). |
 | `--port <n>` | `3000` | Preferred dev server port. If busy, Studio uses the next free one; if the server announces a different one at startup (Vite), Studio adopts it. |
 | `--studio-port <n>` | `4700` | Port of the Studio page. The app proxy uses the next free one. |
 | `--dev-cmd "<cmd>"` | `npm run dev` | Dev server command. It receives `PORT` and `BROWSER=none`. |

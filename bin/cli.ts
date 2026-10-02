@@ -8,6 +8,7 @@ import open from 'open';
 import { cleanupAnnotations } from '../src/server/annotations.js';
 import type { AppBridge } from '../src/server/bridge.js';
 import { DesktopApp } from '../src/server/desktop.js';
+import { detectProject } from '../src/server/detect.js';
 import { DevServer } from '../src/server/devserver.js';
 import { electronEnv, ElectronBridge, electronModeNote, expandAppCommand } from '../src/server/electron.js';
 import { proposeGitignore } from '../src/server/gitignore.js';
@@ -51,7 +52,8 @@ function parsePort(value: string): number {
 }
 
 interface CliOptions {
-  mode: 'web' | 'window' | 'electron';
+  /** Non indicata: Studio riconosce il tipo di progetto (detect.ts). */
+  mode?: 'web' | 'window' | 'electron';
   port: number;
   studioPort: number;
   devCmd: string;
@@ -109,7 +111,7 @@ program
   .description(t('cli.description'))
   .version(pkg.version, '-v, --version', t('cli.opt.version'))
   .helpOption('-h, --help', t('cli.opt.help'))
-  .addOption(new Option('--mode <mode>', t('cli.opt.mode')).choices(['web', 'window', 'electron']).default('web'))
+  .addOption(new Option('--mode <mode>', t('cli.opt.mode')).choices(['web', 'window', 'electron']))
   .addOption(new Option('--port <n>', t('cli.opt.port')).argParser(parsePort).default(3000))
   .addOption(new Option('--studio-port <n>', t('cli.opt.studioPort')).argParser(parsePort).default(4700))
   .option('--dev-cmd <cmd>', t('cli.opt.devCmd'), 'npm run dev')
@@ -149,11 +151,28 @@ function defaultElectronCommand(cwd: string): string | null {
 
 async function main(): Promise<void> {
   const cwd = process.cwd();
-  const mode = opts.mode;
+  // Senza --mode Studio guarda il progetto: dipendenze e file di progetto dicono che app è e come si
+  // avvia. Ciò che è scritto sulla riga di comando vince sempre; i valori rilevati non si ricordano.
+  const explicit = { mode: Boolean(opts.mode), appCmd: Boolean(opts.appCmd), devCmd: program.getOptionValueSource('devCmd') === 'cli' };
+  const detection = opts.mode ? null : detectProject(cwd);
+  const mode: CliOptions['mode'] & string = opts.mode ?? detection?.mode ?? (opts.appCmd ? 'window' : 'web');
+  opts.mode = mode;
+  if (detection) {
+    if (!explicit.appCmd && detection.appCmd && mode !== 'web') opts.appCmd = detection.appCmd;
+    if (!explicit.devCmd && detection.devCmd && mode === 'web') opts.devCmd = detection.devCmd;
+    // App desktop riconosciuta ma senza un comando di avvio certo: si sceglie una finestra già aperta
+    if (mode === 'window' && !opts.appCmd && opts.dev) opts.dev = false;
+  }
   const desktopMode = mode !== 'web';
   console.log(
     `${c.brand('◆')} ${c.bold('Riverloop Studio')} ${c.dim(pkg.version)} ${c.dim('—')} ${path.basename(cwd)}${desktopMode ? c.dim(t('cli.banner.mode', { mode })) : ''}`,
   );
+
+  if (detection) {
+    log.info(t(`cli.detect.${detection.kind}`, { evidence: c.bold(detection.evidence), mode }));
+    if (mode === 'window' && !opts.appCmd) log.dim(`  ${t('cli.detect.noEntry')}`);
+    log.dim(`  ${t('cli.detect.override')}`);
+  }
 
   // 1. Prerequisiti ----------------------------------------------------------
   const nodeMajor = Number(process.versions.node.split('.')[0]);
@@ -448,10 +467,10 @@ async function main(): Promise<void> {
     registerInstance(registryEntry);
     // Opzioni di avvio diverse da quelle predefinite: il menu Progetti riaprirà il progetto così
     const launch = {
-      ...(mode !== 'web' ? { mode } : {}),
-      ...(mode === 'web' && opts.devCmd !== 'npm run dev' ? { devCmd: opts.devCmd } : {}),
+      ...(explicit.mode && mode !== 'web' ? { mode } : {}),
+      ...(mode === 'web' && explicit.devCmd ? { devCmd: opts.devCmd } : {}),
       ...(mode === 'web' && opts.port !== 3000 ? { port: opts.port } : {}),
-      ...(opts.appCmd ? { appCmd: opts.appCmd } : {}),
+      ...(explicit.appCmd ? { appCmd: opts.appCmd } : {}),
       ...(opts.windowTitle ? { windowTitle: opts.windowTitle } : {}),
       ...(mode === 'electron' && opts.cdpPort !== 9222 ? { cdpPort: opts.cdpPort } : {}),
       ...(!opts.dev ? { noDev: true } : {}),

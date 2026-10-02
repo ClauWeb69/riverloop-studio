@@ -150,7 +150,7 @@ riverloop-studio --mode window --no-dev --window-title "Gestionale" # finestra g
 
 | Opzione | Default | Effetto |
 |---|---|---|
-| `--mode <web\|window\|electron>` | `web` | Tipo di app: dev server web, finestra nativa, app Electron/Chromium. Vedi [App desktop](#app-desktop). |
+| `--mode <web\|window\|electron>` | rilevata | Tipo di app: dev server web, finestra nativa, app Electron/Chromium. Senza, Studio la riconosce dal progetto (dipendenza Electron o Tauri, script del `package.json`, progetto .NET desktop, interfaccia Python, Flutter) e sceglie anche il comando di avvio; il terminale dice cosa ha trovato. Vedi [App desktop](#app-desktop). |
 | `--port <n>` | `3000` | Porta preferita del dev server. Se è occupata Studio usa la prima libera successiva; se il server ne annuncia un'altra all'avvio (Vite), Studio la adotta. |
 | `--studio-port <n>` | `4700` | Porta della pagina Studio. Il proxy dell'app usa la successiva libera. |
 | `--dev-cmd "<cmd>"` | `npm run dev` | Comando del dev server. Riceve `PORT` e `BROWSER=none`. |

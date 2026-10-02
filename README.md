@@ -40,7 +40,7 @@ Describing a UI change in words is slow and ambiguous: *"the second button in th
 | | |
 |---|---|
 | **Three annotation tools** — Element (hover, ↑/↓ for parent and child, click), Area and freehand Draw, each with its own comment and numbered badge. Batch them and send with Ctrl+Enter, or turn on auto-send. | **Exact file and line** — optional build plugins for Next.js (webpack and Turbopack), Vite and Babel add `data-studio-src` to your JSX in development, so Claude opens the right file at the right line. |
-| **Hot reload in place** — web apps run through a local proxy in an iframe; Next.js, Vite and friends update without losing state. | **Desktop apps** — `--mode electron` mirrors an Electron/WebView2 app with mouse, keyboard and scrolling; `--mode window` captures any native window. Optional automatic restart after each reply that changed files. |
+| **Hot reload in place** — web apps run through a local proxy in an iframe; Next.js, Vite and friends update without losing state. | **Desktop apps** — Electron and WebView2 apps are mirrored live with mouse, keyboard and scrolling; any other native window is captured. The kind of app is detected automatically. Optional automatic restart after each reply that changed files. |
 | **Undo / Redo of file changes** — snapshots before every request, stored outside your project. | **Claude bar** — model, effort, ultracode, permission mode (no more cycling Shift+Tab), goal and usage of the 5-hour and 7-day limits. |
 | **Several sessions** — up to 8 Claude Code tabs per project, renamable (*bugs*, *UI*, *refactor*…); names follow the conversation when you resume it. | **Several projects** — open, switch and close Studio instances for other folders from the page; each reopens the way it was started. |
 | **Project suggestions** — Studio spots setup improvements (missing source plugin, hard-coded dev port…) and asks Claude to apply them with one click. | **Responsive and bilingual** — works from a phone-sized window up; English and Italian, for the page, the terminal and the prompts. |
@@ -126,14 +126,25 @@ cd my-app
 riverloop-studio
 ```
 
-Studio starts your dev server (`npm run dev`, or `--dev-cmd "…"`), starts Claude Code in the same folder and opens the page in your browser. That's it: pick a tool, mark something, write what you want, press **Send**.
+No flags needed: Studio looks at the project, recognises what kind of app it is and how to start it, starts it, starts Claude Code in the same folder and opens the page in your browser. That's it: pick a tool, mark something, write what you want, press **Send**.
+
+| If the project has… | Studio opens it as | and starts it with |
+|---|---|---|
+| `electron` in its dependencies | Electron app (live mirror) | the `dev` or `start` script |
+| `src-tauri/tauri.conf.json` | Tauri app (live mirror on Windows, window capture elsewhere) | `npm run tauri dev` |
+| a `package.json` with a `dev`/`start` script (Next.js, Vite, Nuxt, Astro, CRA…) | web app | that script, with npm, pnpm, yarn or bun (from the lock file) |
+| a .NET desktop project (WPF, WinForms, Avalonia, MAUI) | native window | `dotnet run` |
+| a Python GUI (PyQt, PySide, Tkinter, Kivy, wx…) | native window | `python main.py` (or `app.py`) |
+| a Flutter project | native window | `flutter run -d <your OS>` |
+
+The terminal says what was detected and why. Anything you pass on the command line wins:
 
 ```bash
 riverloop-studio --port 5173                         # your dev server's port
-riverloop-studio --no-dev                            # attach to a dev server that is already running
-riverloop-studio --mode electron                     # an Electron app ("npm run dev" or "npm start")
-riverloop-studio --mode electron --app-cmd "npm run tauri dev"   # Tauri on Windows (WebView2)
-riverloop-studio --mode window --app-cmd "dotnet run"            # any native window
+riverloop-studio --no-dev                            # attach to an app that is already running
+riverloop-studio --dev-cmd "pnpm dev:web"            # a different dev command
+riverloop-studio --app-cmd "npm run electron:dev"    # a different command for a desktop app
+riverloop-studio --mode window --app-cmd "./build/MyApp"   # force a kind of app
 riverloop-studio --lang en                           # English UI and prompts for this run
 ```
 

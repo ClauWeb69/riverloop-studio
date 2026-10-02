@@ -70,7 +70,7 @@ Files with a `.cts` extension are deliberately CommonJS: `src/plugin/*.cts` (web
 
 ### Process lifecycle (`bin/cli.ts`)
 
-Checks prerequisites (Node, `claude --version`, node-pty), claims ports through lock files (`portlock.ts`), starts what is being annotated (a `DevServer` in web mode, a `DesktopApp` plus its bridge in desktop modes), creates the `SessionManager`, starts the companion, registers the instance in the per-user registry (`projects.ts`), then opens the browser. Shutdown (signals, `/api/shutdown`, uncaught exception) stops Claude sessions, the app and the companion in order; `hardKill` on `exit` is the last defence against orphan processes and must never throw.
+Without `--mode`, picks the kind of app and its start command with `detectProject` (`detect.ts`: Electron/Tauri dependencies, `package.json` scripts and the lock file, .NET desktop projects, Python GUIs, Flutter; read-only, explicit options always win, detected values are not remembered as launch options). Checks prerequisites (Node, `claude --version`, node-pty), claims ports through lock files (`portlock.ts`), starts what is being annotated (a `DevServer` in web mode, a `DesktopApp` plus its bridge in desktop modes), creates the `SessionManager`, starts the companion, registers the instance in the per-user registry (`projects.ts`), then opens the browser. Shutdown (signals, `/api/shutdown`, uncaught exception) stops Claude sessions, the app and the companion in order; `hardKill` on `exit` is the last defence against orphan processes and must never throw.
 
 `DesktopApp` (`desktop.ts`) deliberately has the same surface as `DevServer` (status, log, restart, stop) so the page shows both the same way; the companion only sees the common `AppRunner` shape.
 

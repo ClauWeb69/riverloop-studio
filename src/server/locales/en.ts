@@ -367,4 +367,12 @@ export const en: Messages<typeof it> = {
   'claude.error.ultracode-unconfirmed':
     'Claude Code did not change ultracode (it may not be available for this model or plan): see the message in the console.',
   'prompt.loc.sources': 'Likely source of the control (found by searching the project for its AutomationId or text, please verify): {list}',
+  'cli.detect.electron': 'Detected an Electron app ({evidence} in the dependencies) → {mode} mode.',
+  'cli.detect.tauri': 'Detected a Tauri app ({evidence}) → {mode} mode.',
+  'cli.detect.web': 'Detected a web app ({evidence}) → {mode} mode.',
+  'cli.detect.dotnet': 'Detected a .NET desktop app ({evidence}) → {mode} mode.',
+  'cli.detect.python': 'Detected a Python GUI app ({evidence}) → {mode} mode.',
+  'cli.detect.flutter': 'Detected a Flutter app ({evidence}) → {mode} mode.',
+  'cli.detect.noEntry': "Can't find the file to start: start the app yourself and pick it from the window list, or give the command with --app-cmd.",
+  'cli.detect.override': 'To choose yourself: --mode web|electron|window, --dev-cmd, --app-cmd.',
 };

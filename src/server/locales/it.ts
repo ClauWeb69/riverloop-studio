@@ -365,4 +365,12 @@ export const it = {
   'claude.error.ultracode-unconfirmed':
     'Claude Code non ha cambiato ultracode (forse non è disponibile per questo modello o piano): guarda il messaggio nella console.',
   'prompt.loc.sources': 'Probabile codice del controllo (trovato cercandone AutomationId o testo nel progetto, da verificare): {list}',
+  'cli.detect.electron': 'Progetto riconosciuto: app Electron ({evidence} tra le dipendenze) → modalità {mode}.',
+  'cli.detect.tauri': 'Progetto riconosciuto: app Tauri ({evidence}) → modalità {mode}.',
+  'cli.detect.web': 'Progetto riconosciuto: app web ({evidence}) → modalità {mode}.',
+  'cli.detect.dotnet': 'Progetto riconosciuto: app desktop .NET ({evidence}) → modalità {mode}.',
+  'cli.detect.python': 'Progetto riconosciuto: app Python con interfaccia ({evidence}) → modalità {mode}.',
+  'cli.detect.flutter': 'Progetto riconosciuto: app Flutter ({evidence}) → modalità {mode}.',
+  'cli.detect.noEntry': "Non trovo il file da avviare: avvia l'app tu e sceglila dall'elenco delle finestre, oppure indica il comando con --app-cmd.",
+  'cli.detect.override': 'Per scegliere tu: --mode web|electron|window, --dev-cmd, --app-cmd.',
 } as const;
