@@ -1,0 +1,15 @@
+# Line endings: LF everywhere, on every OS (Prettier checks it; Windows checkouts would otherwise get CRLF)
+* text=auto eol=lf
+
+# PowerShell scripts run fine with LF, but keep Windows tooling happy
+*.ps1 text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.tgz binary

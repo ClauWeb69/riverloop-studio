@@ -231,11 +231,16 @@ describe('fine risposta di Claude Code (hook)', () => {
     const cmd = hookCommand('G:\\Studio con spazi\\dist\\bin\\hook.js');
     expect(cmd).toBe('node "G:/Studio con spazi/dist/bin/hook.js"');
     // il Node che esegue Studio finisce in fondo al PATH di claude, senza scavalcare quello dell'utente
+    // Percorsi del sistema su cui girano i test (C:\... su Windows, /... altrove)
     const sep = path.delimiter;
-    const added = hookPath({ Path: ['C:\\altro', 'C:\\bin'].join(sep) }, path.join('C:\\nodejs', 'node.exe'));
+    const dir = (name: string) => path.join(path.parse(process.cwd()).root, name);
+    const added = hookPath({ Path: [dir('altro'), dir('bin')].join(sep) }, path.join(dir('nodejs'), 'node.exe'));
     expect(added.name).toBe('Path');
-    expect(added.value.split(sep)).toEqual(['C:\\altro', 'C:\\bin', 'C:\\nodejs']);
-    expect(hookPath({ PATH: ['C:\\nodejs', 'C:\\bin'].join(sep) }, path.join('C:\\nodejs', 'node.exe')).value.split(sep)).toEqual(['C:\\nodejs', 'C:\\bin']);
+    expect(added.value.split(sep)).toEqual([dir('altro'), dir('bin'), dir('nodejs')]);
+    expect(hookPath({ PATH: [dir('nodejs'), dir('bin')].join(sep) }, path.join(dir('nodejs'), 'node.exe')).value.split(sep)).toEqual([
+      dir('nodejs'),
+      dir('bin'),
+    ]);
     const settings = hookSettings(cmd);
     expect(settings.hooks.Stop[0].hooks[0]).toMatchObject({ type: 'command', command: cmd });
     expect(settings.hooks.PostToolUse[0].matcher).toBe('Edit|Write|MultiEdit|NotebookEdit|Bash');
